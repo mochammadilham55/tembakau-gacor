@@ -1,16 +1,3 @@
-"""
-Konversi tabel BPS Kabupaten Jember
-"Banyaknya Curah Hujan Menurut Kecamatan, Stasiun Pengukur, dan Bulan"
-menjadi data/iklim_jember.csv (format yang dibaca app.py).
-
-Langkah pembersihan:
-- baris stasiun tanpa angka (mis. Tamanan = "KABUPATEN BONDOWOSO") dilewati;
-- baris stasiun yang tercatat dua kali dengan angka identik dihitung sekali;
-- curah hujan kecamatan = rata-rata semua stasiun di kecamatan itu, per bulan.
-Nilai asli BPS tidak diubah (termasuk nilai ekstrem); BPS menulis satuan "mm2", yang dimaksud mm.
-
-Pakai:  python tools/konversi_bps.py
-"""
 import csv
 import glob
 import os
@@ -24,7 +11,6 @@ BULAN = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli",
 
 
 def baca_tabel(path):
-    """Hasil: {kecamatan: [[12 nilai], ...per stasiun]} dalam urutan tabel."""
     with open(path, encoding="utf-8-sig", newline="") as f:
         baris = list(csv.reader(f))
     data, kec, terlewat = {}, None, []
@@ -41,7 +27,7 @@ def baca_tabel(path):
             terlewat.append(f"{kec}/{r[4].strip()}")
             continue
         stasiun = data.setdefault(kec, {})
-        stasiun.setdefault((r[4].strip(), tuple(nilai)), nilai)   # duplikat identik -> sekali
+        stasiun.setdefault((r[4].strip(), tuple(nilai)), nilai)
     return {k: list(v.values()) for k, v in data.items()}, terlewat
 
 

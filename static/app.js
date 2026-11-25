@@ -7,7 +7,6 @@ function query() {
 }
 
 function tampilGambar(url, v) {
-  // crossfade: muat ke gambar belakang, lalu tukar
   const belakang = $(depan === "A" ? "gambarB" : "gambarA"), muka = $(depan === "A" ? "gambarA" : "gambarB");
   belakang.onload = () => {
     if (v !== versi) return;

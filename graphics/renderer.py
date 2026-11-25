@@ -1,4 +1,3 @@
-"""Perakit scene graph + keluaran PNG (Pycairo ImageSurface)."""
 import io
 from functools import lru_cache
 
@@ -19,7 +18,7 @@ def bangun_scene(fase, hujan, seed):
     lahan.add(Akar(cfg["akar"], k["vigor"], seed))
     tan = bangun_tanaman(k, cfg, seed)
     tan.x, tan.y = CX, GY + 8
-    if cfg["nama"] == "Persemaian":                     # media semai (polibag) di pangkal bibit
+    if cfg["nama"] == "Persemaian":
         pot = Node("Polibag", x=CX, y=GY + 2)
         pot.draw = lambda ctx: (ctx.rectangle(-34, -6, 68, 22), ctx.set_source_rgb(0.27, 0.27, 0.3), ctx.fill())
         lahan.add(pot)
