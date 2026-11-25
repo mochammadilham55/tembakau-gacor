@@ -19,7 +19,8 @@
       <img id="gambarA" alt="Tanaman tembakau hasil render Pycairo">
       <div id="badge" class="badge">Memuat...</div>
     </div>
-    <div id="status" class="status"></div>
+    <div id="status" class="status" role="status"></div>
+    <a id="unduh" download="tembakau-gacor.png">Unduh PNG</a>
   </section>
   <section class="kanan">
     <h2>Fase pertumbuhan</h2>
@@ -39,21 +40,21 @@
     </div>
     <p id="ketdata" class="kecil"></p>
     <label>Curah hujan: <b id="v_hujan">100</b> mm/bulan
-      <input type="range" id="hujan" min="0" max="1000" step="5" value="100"></label>
+      <input type="range" id="hujan" min="0" max="5000" step="0.1" value="100"></label>
     <label>Seed acak: <b id="v_seed">1</b>
       <input type="range" id="seed" min="1" max="50" step="1" value="1"></label>
 
     <div class="hasil">
-      <div class="kartu"><b id="o_indeks">-</b><span>Indeks kondisi</span></div>
+      <div class="kartu"><b id="o_indeks">-</b><span>Indeks simulasi</span></div>
       <div class="kartu"><b id="o_daun">-</b><span>Jumlah daun</span></div>
-      <div class="kartu"><b id="o_mutu">-</b><span>Perkiraan mutu</span></div>
+      <div class="kartu"><b id="o_mutu">-</b><span>Kategori simulasi</span></div>
     </div>
     <p id="o_ciri" class="ciri"></p>
     <ul id="o_catatan"></ul>
     <details><summary>Struktur scene graph</summary><div id="o_node" class="kecil"></div><pre id="o_tree"></pre></details>
     <p class="kecil">Ambang optimum hujan {{ asumsi.hujan_optimum[0]|int }}-{{ asumsi.hujan_optimum[1]|int }} mm/bulan
       dan rentang hari tiap fase
-      adalah <b>asumsi</b> model, bukan data resmi.</p>
+      adalah <b>asumsi</b> model, bukan data resmi. Visualisasi terinspirasi Na-Oogst; bukan prediksi agronomi atau mutu daun.</p>
   </section>
 </main>
 <script src="{{ url_for('static', filename='app.js') }}"></script>

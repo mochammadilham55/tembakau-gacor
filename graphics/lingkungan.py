@@ -110,6 +110,12 @@ class Tanah(Node):
                     ctx.line_to(x, y)
                 ctx.stroke()
             ctx.restore()
+        # Genangan hanya ilustrasi skenario hujan ekstrem, bukan estimasi hidrologi.
+        genang = clamp((self.hujan - 450) / 300, 0, 1)
+        if genang > 0:
+            ctx.set_source_rgba(.30, .55, .75, .65 * genang)
+            ctx.rectangle(0, GY + 2, W, 8)
+            ctx.fill()
         wet = cairo.LinearGradient(0, GY + 6, 0, GY + 170)  # alpha blending: kelembapan
         wet.add_color_stop_rgba(0, 0.25, 0.5, 0.85, 0.5 * basah)
         wet.add_color_stop_rgba(1, 0.25, 0.5, 0.85, 0)

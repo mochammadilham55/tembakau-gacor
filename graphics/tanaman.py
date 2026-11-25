@@ -37,7 +37,7 @@ class Daun(Node):
 
     def draw(self, ctx):
         L, b = self.L, self.b
-        w = L * 0.34
+        w = L * 0.42  # proporsi artistik, bukan ukuran lapangan
         ctx.move_to(0, 0)
         ctx.curve_to(w + b * .3, -L * .22, w * .95 + b * .8, -L * .68, b * 1.2, -L)
         ctx.curve_to(-w * .8 + b * .8, -L * .66, -w * .85 + b * .3, -L * .2, 0, 0)
@@ -128,7 +128,7 @@ def bangun_tanaman(k, cfg, seed):
             L *= (0.6 + 0.4 * vigor) * rng.uniform(0.93, 1.07)
             kb = cfg["kuning_bawah"]
             alami = max(0.0, (kb - leaf_i) / kb) if kb else 0.0        # daun bawah menguning saat pemasakan
-            kuning = clamp(0.75 * stres + alami * 0.85, 0, 1)
+            kuning = clamp(0.55 * k["stres_kering"] + 0.75 * k["stres_basah"] + alami * 0.85, 0, 1)
             lengkung = side * L * (.30 - .14 * uu + wilt * .15)
             cur.add(Daun(L, lengkung, kuning))
             leaf_i += 1

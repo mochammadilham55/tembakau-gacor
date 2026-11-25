@@ -1,5 +1,6 @@
 """Perakit scene graph + keluaran PNG (Pycairo ImageSurface)."""
 import io
+from functools import lru_cache
 
 import cairo
 
@@ -27,6 +28,7 @@ def bangun_scene(fase, hujan, seed):
     return lahan, k
 
 
+@lru_cache(maxsize=16)
 def render_png(fase, hujan, seed=1):
     lahan, _ = bangun_scene(fase, hujan, seed)
     surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, W, H)
@@ -40,4 +42,4 @@ def render_png(fase, hujan, seed=1):
 
 def info_scene(fase, hujan, seed=1):
     lahan, k = bangun_scene(fase, hujan, seed)
-    return k, lahan.count(), lahan.to_dict(max_depth=4)
+    return k, lahan.count(), lahan.to_dict(max_depth=32)
