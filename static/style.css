@@ -1,0 +1,29 @@
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,Arial,sans-serif;background:#eef4e8;color:#233}
+header{background:linear-gradient(90deg,#26603a,#4c8c46);color:#fff;padding:12px 16px}
+header h1{margin:0;font-size:1.35rem}header p{margin:2px 0 0;font-size:.8rem;opacity:.88}
+main{display:flex;flex-wrap:wrap;gap:16px;padding:14px;max-width:1300px;margin:auto}
+.kiri{flex:2 1 520px;min-width:0}.kanan{flex:1 1 320px;min-width:0;background:#fff;border-radius:12px;padding:14px;box-shadow:0 1px 6px #0002}
+.kanvas{position:relative;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px #0003;background:#9bc;aspect-ratio:960/640}
+.kanvas img{position:absolute;inset:0;width:100%;height:100%;display:block;transition:opacity .6s ease}
+#gambarB{opacity:0}#gambarA{opacity:1}
+.badge{position:absolute;left:10px;top:10px;background:#fffd;border-radius:8px;padding:6px 10px;font-size:.85rem;font-weight:600;color:#1d4a2b}
+.status{font-size:.8rem;color:#567;margin-top:6px;min-height:1.2em}
+h2{font-size:1rem;margin:12px 0 6px}
+.chips{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.chip{padding:8px 2px;border:0;border-radius:8px;background:#e3ece0;color:#456;font-size:.72rem;cursor:pointer;line-height:1.2}
+.chip.on{background:#e8ba3a;color:#3a2a05;font-weight:700}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+button{padding:9px 8px;font-size:.9rem;border:0;border-radius:8px;background:#2f6b3a;color:#fff;cursor:pointer}
+button:disabled{opacity:.45}
+button.besar{width:100%;padding:11px;margin-top:8px;font-size:1rem;background:#1f5a8a}
+label{display:block;margin:10px 0;font-size:.88rem}
+input[type=range],select{width:100%;margin-top:4px}select{padding:6px}
+.pilih{display:grid;grid-template-columns:1fr 2fr 1.4fr;gap:6px}.pilih label{margin:4px 0}
+.hasil{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
+.kartu{background:#edf5ea;border-radius:10px;padding:8px 4px;text-align:center}
+.kartu b{display:block;font-size:1.1rem;color:#26603a}.kartu span{font-size:.68rem;color:#678}
+.ciri{font-size:.88rem;margin:10px 0 4px;font-weight:600}
+#o_catatan{margin:4px 0;padding-left:18px;font-size:.85rem;color:#8a3a1a}
+.kecil{font-size:.76rem;color:#678}
+pre{font-size:.72rem;overflow:auto;background:#eee;padding:8px;border-radius:6px;max-height:240px}

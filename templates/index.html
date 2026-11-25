@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TembakauGacor - Simulasi Pertumbuhan Daun Tembakau</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+  <h1>TembakauGacor</h1>
+  <p>Simulasi interaktif pertumbuhan daun tembakau berdasarkan cuaca &middot; Pycairo &middot; Scene Graph &middot; L-system</p>
+</header>
+<main>
+  <section class="kiri">
+    <div class="kanvas">
+      <img id="gambarB" alt="" aria-hidden="true">
+      <img id="gambarA" alt="Tanaman tembakau hasil render Pycairo">
+      <div id="badge" class="badge">Memuat...</div>
+    </div>
+    <div id="status" class="status"></div>
+  </section>
+  <section class="kanan">
+    <h2>Fase pertumbuhan</h2>
+    <div id="chips" class="chips"></div>
+    <div class="nav">
+      <button id="prev">&larr; Sebelumnya</button>
+      <button id="next">Berikutnya &rarr;</button>
+    </div>
+    <button id="play" class="besar">&#9654; Putar semua fase</button>
+
+    <h2>Cuaca</h2>
+    <p class="kecil">Data curah hujan BPS Kabupaten Jember per kecamatan</p>
+    <div class="pilih">
+      <label>Tahun<select id="tahun"></select></label>
+      <label>Kecamatan<select id="kecamatan"></select></label>
+      <label>Bulan<select id="bulan"><option value="">- manual -</option></select></label>
+    </div>
+    <p id="ketdata" class="kecil"></p>
+    <label>Curah hujan: <b id="v_hujan">100</b> mm/bulan
+      <input type="range" id="hujan" min="0" max="1000" step="5" value="100"></label>
+    <label>Seed acak: <b id="v_seed">1</b>
+      <input type="range" id="seed" min="1" max="50" step="1" value="1"></label>
+
+    <div class="hasil">
+      <div class="kartu"><b id="o_indeks">-</b><span>Indeks kondisi</span></div>
+      <div class="kartu"><b id="o_daun">-</b><span>Jumlah daun</span></div>
+      <div class="kartu"><b id="o_mutu">-</b><span>Perkiraan mutu</span></div>
+    </div>
+    <p id="o_ciri" class="ciri"></p>
+    <ul id="o_catatan"></ul>
+    <details><summary>Struktur scene graph</summary><div id="o_node" class="kecil"></div><pre id="o_tree"></pre></details>
+    <p class="kecil">Ambang optimum hujan {{ asumsi.hujan_optimum[0]|int }}-{{ asumsi.hujan_optimum[1]|int }} mm/bulan
+      dan rentang hari tiap fase
+      adalah <b>asumsi</b> model, bukan data resmi.</p>
+  </section>
+</main>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
