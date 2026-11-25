@@ -1,10 +1,11 @@
 """Server Flask TembakauGacor: antarmuka web + gambar PNG dari Pycairo."""
 import csv
 import os
+from functools import lru_cache
 
 from flask import Flask, Response, jsonify, render_template, request
 
-from graphics.growth import ASUMSI, FASE
+from graphics.growth import ASUMSI, FASE, MAX_HUJAN
 from graphics.renderer import info_scene, render_png
 
 app = Flask(__name__)
@@ -23,10 +24,11 @@ def _angka(nama, default, lo, hi):
 
 
 def _params():
-    return (int(_angka("fase", 0, 0, len(FASE) - 1)), _angka("hujan", 100, 0, 1000),
+    return (int(_angka("fase", 0, 0, len(FASE) - 1)), _angka("hujan", 100, 0, MAX_HUJAN),
             int(_angka("seed", 1, 0, 99999)))
 
 
+@lru_cache(maxsize=1)
 def muat_data():
     with open(DATA_CSV, newline="", encoding="utf-8") as f:
         return list(csv.DictReader(f))
@@ -58,8 +60,11 @@ def fase_list():
 
 @app.route("/api/data")
 def data():
-    return jsonify(muat_data())
+    try:
+        return jsonify(muat_data())
+    except (OSError, csv.Error):
+        return jsonify({"error": "Data curah hujan tidak tersedia."}), 503
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=os.environ.get("FLASK_DEBUG") == "1", port=5000)

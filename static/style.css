@@ -27,3 +27,6 @@ input[type=range],select{width:100%;margin-top:4px}select{padding:6px}
 #o_catatan{margin:4px 0;padding-left:18px;font-size:.85rem;color:#8a3a1a}
 .kecil{font-size:.76rem;color:#678}
 pre{font-size:.72rem;overflow:auto;background:#eee;padding:8px;border-radius:6px;max-height:240px}
+
+#unduh{display:inline-block;margin-top:8px;color:#26603a}button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #1f5a8a;outline-offset:2px}
+@media(max-width:480px){.pilih{grid-template-columns:1fr}.chips{grid-template-columns:repeat(3,1fr)}.hasil{grid-template-columns:1fr}.badge{font-size:.72rem}}

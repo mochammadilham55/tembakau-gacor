@@ -53,3 +53,6 @@ graphics/        scene.py, lsystem.py, growth.py, tanaman.py, lingkungan.py, ren
 tools/           konversi_bps.py (tabel BPS -> data/iklim_jember.csv)
 templates/ static/ data/ (data/bps = tabel asli BPS)
 ```
+
+## Penyempurnaan ilmiah
+Visualisasi terinspirasi Besuki Na-Oogst, bukan model agronomi tervalidasi. Jumlah daun dewasa 24 adalah pilihan representasi awal; jumlah fase lain dan proporsi visual masih asumsi. Lihat [catatan validasi](docs/validasi_parameter.md). Jalankan `python -m unittest discover -s tests` untuk pengujian. Debug lokal opsional dengan FLASK_DEBUG=1.

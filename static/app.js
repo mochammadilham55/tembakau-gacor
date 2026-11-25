@@ -13,6 +13,7 @@ function tampilGambar(url, v) {
     if (v !== versi) return;
     belakang.style.opacity = 1; muka.style.opacity = 0; depan = depan === "A" ? "B" : "A";
     $("status").textContent = "";
+    $("unduh").href = url;
   };
   belakang.onerror = () => { if (v === versi) $("status").textContent = "Gagal merender gambar."; };
   belakang.src = url;
@@ -24,19 +25,19 @@ function perbarui() {
   $("status").textContent = "Merender...";
   tampilGambar("/render.png?" + q + "&t=" + Date.now(), v);
   document.querySelectorAll(".chip").forEach((c, i) => c.classList.toggle("on", i === fase));
-  fetch("/api/info?" + q).then(r => r.json()).then(d => {
+  fetch("/api/info?" + q).then(r => { if (!r.ok) throw Error("API"); return r.json(); }).then(d => {
     if (v !== versi) return;
     const k = d.kondisi;
     $("badge").textContent = "Fase " + (k.fase + 1) + ": " + k.nama + " (" + k.hari + ")";
     $("o_indeks").textContent = k.indeks_kondisi + "/100";
     $("o_daun").textContent = k.jumlah_daun;
-    $("o_mutu").textContent = k.mutu;
+    $("o_mutu").textContent = k.kategori_simulasi;
     $("o_ciri").textContent = k.ciri;
     $("o_catatan").innerHTML = "";
     k.catatan.forEach(c => { const li = document.createElement("li"); li.textContent = c; $("o_catatan").appendChild(li); });
     $("o_node").textContent = "Jumlah node: " + d.jumlah_node;
     $("o_tree").textContent = tulisPohon(d.scene_graph, 0);
-  }).catch(() => {});
+  }).catch(() => { if (v === versi) { ["o_indeks","o_daun","o_mutu","o_ciri","o_node","o_tree"].forEach(id => $(id).textContent = "-"); $("o_catatan").textContent = "Informasi simulasi gagal dimuat."; } });
   $("prev").disabled = fase <= 0;
   $("next").disabled = fase >= daftarFase.length - 1;
 }
@@ -79,7 +80,11 @@ function terapkanData() {
   const t = $("tahun").value, k = $("kecamatan").value, b = $("bulan").value;
   const d = dataBulan.find(r => r.tahun === t && r.wilayah === k && r.bulan === b);
   if (!d) { $("ketdata").textContent = "Pilih bulan untuk memakai data BPS, atau atur slider secara manual."; return; }
-  $("hujan").value = Math.round(Number(d.curah_hujan_mm) / 5) * 5;
+  const nilai = Number(d.curah_hujan_mm);
+  if (d.curah_hujan_mm.trim() === "" || !Number.isFinite(nilai) || nilai < 0 || nilai > 5000) {
+    $("ketdata").textContent = "Data tidak valid atau di luar batas teknis."; return;
+  }
+  $("hujan").value = nilai;
   $("ketdata").textContent = d.bulan + " " + d.tahun + ", Kec. " + d.wilayah + ": " + d.curah_hujan_mm +
     " mm (rata-rata " + d.jumlah_stasiun + " stasiun). Status: " + d.status_data + ". " + d.sumber;
   perbarui();
@@ -106,4 +111,4 @@ $("hujan").addEventListener("input", () => { $("bulan").value = ""; $("ketdata")
   isiPilihan("bulan", unik(d.map(r => r.bulan)));
   terapkanData();
   perbarui();
-})();
+})().catch(() => { $("status").textContent = "Data awal gagal dimuat. Muat ulang halaman."; });
