@@ -1,7 +1,3 @@
-"""
-Tanaman tembakau: bentuk Pycairo + penerjemah string L-system -> scene graph.
-Hierarki: Tanaman > Ruas > Cabang > Daun, dan Ruas > Bunga di pucuk.
-"""
 import math
 import random
 
@@ -37,7 +33,7 @@ class Daun(Node):
 
     def draw(self, ctx):
         L, b = self.L, self.b
-        w = L * 0.42  # proporsi artistik, bukan ukuran lapangan
+        w = L * 0.42
         ctx.move_to(0, 0)
         ctx.curve_to(w + b * .3, -L * .22, w * .95 + b * .8, -L * .68, b * 1.2, -L)
         ctx.curve_to(-w * .8 + b * .8, -L * .66, -w * .85 + b * .3, -L * .2, 0, 0)
@@ -49,12 +45,12 @@ class Daun(Node):
         ctx.set_source_rgba(0, 0.1, 0, 0.22)
         ctx.set_line_width(1)
         ctx.stroke()
-        ctx.set_source_rgba(0.95, 1, 0.85, 0.7)              # tulang daun utama
+        ctx.set_source_rgba(0.95, 1, 0.85, 0.7)
         ctx.set_line_width(max(1.0, L / 55))
         ctx.move_to(0, 0)
         ctx.curve_to(b * .3, -L * .4, b * .8, -L * .75, b * 1.2, -L)
         ctx.stroke()
-        if L > 40:                                           # tulang daun samping
+        if L > 40:
             ctx.set_source_rgba(0.95, 1, 0.85, 0.35)
             ctx.set_line_width(1)
             for t in (.25, .45, .65, .82):
@@ -66,7 +62,6 @@ class Daun(Node):
 
 
 class Bunga(Node):
-    """Malai bunga: cabang kurva Bezier dengan bunga kecil merah muda."""
     def __init__(self, skala, seed):
         super().__init__("Bunga")
         self.s, self.seed = skala, seed
@@ -98,7 +93,6 @@ class Bunga(Node):
 
 
 def bangun_tanaman(k, cfg, seed):
-    """Menerjemahkan string L-system menjadi pohon Node (turtle interpretation)."""
     rng = random.Random(seed)
     vigor, stres, wilt = k["vigor"], k["stres"], k["wilt"]
     s = string_tembakau(cfg["iter"], cfg["bunga"] > 0)
@@ -127,7 +121,7 @@ def bangun_tanaman(k, cfg, seed):
             L = cfg["Lmax"] * (.45 + .55 * math.sin(math.pi * min(1, .2 + .8 * uu) * .9)) * (1 - .3 * uu)
             L *= (0.6 + 0.4 * vigor) * rng.uniform(0.93, 1.07)
             kb = cfg["kuning_bawah"]
-            alami = max(0.0, (kb - leaf_i) / kb) if kb else 0.0        # daun bawah menguning saat pemasakan
+            alami = max(0.0, (kb - leaf_i) / kb) if kb else 0.0
             kuning = clamp(0.55 * k["stres_kering"] + 0.75 * k["stres_basah"] + alami * 0.85, 0, 1)
             lengkung = side * L * (.30 - .14 * uu + wilt * .15)
             cur.add(Daun(L, lengkung, kuning))

@@ -1,4 +1,3 @@
-"""Server Flask TembakauGacor: antarmuka web + gambar PNG dari Pycairo."""
 import csv
 import os
 from functools import lru_cache
@@ -13,7 +12,6 @@ DATA_CSV = os.path.join(os.path.dirname(__file__), "data", "iklim_jember.csv")
 
 
 def _angka(nama, default, lo, hi):
-    """Ambil parameter query sebagai angka; nilai salah/NaN/di luar batas dibatasi, bukan error."""
     try:
         v = float(request.args.get(nama, default))
     except (TypeError, ValueError):

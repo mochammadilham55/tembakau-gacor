@@ -1,7 +1,3 @@
-"""
-Latar: langit, tanah (penampang), akar, cuaca. Semua prosedural (seed) dan
-memakai teknik Pycairo: gradient, clipping, masking, alpha, OPERATOR_MULTIPLY.
-"""
 import math
 import random
 
@@ -10,7 +6,7 @@ import cairo
 from .scene import Node
 from .util import clamp, mix, rgb255
 
-W, H, GY = 960, 640, 430          # lebar, tinggi gambar, garis permukaan tanah
+W, H, GY = 960, 640, 430
 CX = W // 2
 
 
@@ -19,7 +15,7 @@ class Langit(Node):
         super().__init__("Langit")
         self.seed = seed
         self.awan = clamp(hujan / 400.0, 0, 1)
-        self.panas = clamp((70 - hujan) / 70.0, 0, 1)    # bulan kering: langit cerah & terik
+        self.panas = clamp((70 - hujan) / 70.0, 0, 1)
 
     def draw(self, ctx):
         rng = random.Random(self.seed + 11)
@@ -32,7 +28,7 @@ class Langit(Node):
         ctx.rectangle(0, 0, W, GY + 4)
         ctx.set_source(g)
         ctx.fill()
-        a = 0.95 * (1 - 0.85 * self.awan)                      # matahari (radial gradient)
+        a = 0.95 * (1 - 0.85 * self.awan)
         sun = mix(rgb255(255, 248, 210), rgb255(255, 190, 90), self.panas)
         rg = cairo.RadialGradient(830, 80, 6, 830, 80, 170)
         rg.add_color_stop_rgba(0, *sun, a)
@@ -42,7 +38,7 @@ class Langit(Node):
         ctx.arc(830, 80, 170, 0, 2 * math.pi)
         ctx.fill()
         warna_awan = mix(rgb255(255, 255, 255), rgb255(120, 128, 138), self.awan)
-        for _ in range(2 + int(6 * self.awan)):                 # awan: MASK gradien
+        for _ in range(2 + int(6 * self.awan)):
             cx, cy = rng.uniform(-30, W + 30), rng.uniform(25, GY - 190)
             s = rng.uniform(0.7, 1.4) * (0.8 + 0.6 * self.awan)
             ctx.push_group()
@@ -75,7 +71,6 @@ class Langit(Node):
 
 
 class Tanah(Node):
-    """Penampang tanah berlapis. Kelembapan = overlay alpha biru; retakan bila kering."""
     def __init__(self, hujan, seed):
         super().__init__("Tanah")
         self.hujan, self.seed = hujan, seed
@@ -96,7 +91,7 @@ class Tanah(Node):
                 ctx.fill()
         if kering > 0.05:
             ctx.save()
-            ctx.rectangle(0, GY + 6, W, 150)               # CLIPPING retakan ke lapisan atas
+            ctx.rectangle(0, GY + 6, W, 150)
             ctx.clip()
             ctx.set_source_rgba(0.08, 0.05, 0.03, 0.55 * kering)
             ctx.set_line_width(1.6)
@@ -110,13 +105,12 @@ class Tanah(Node):
                     ctx.line_to(x, y)
                 ctx.stroke()
             ctx.restore()
-        # Genangan hanya ilustrasi skenario hujan ekstrem, bukan estimasi hidrologi.
         genang = clamp((self.hujan - 450) / 300, 0, 1)
         if genang > 0:
             ctx.set_source_rgba(.30, .55, .75, .65 * genang)
             ctx.rectangle(0, GY + 2, W, 8)
             ctx.fill()
-        wet = cairo.LinearGradient(0, GY + 6, 0, GY + 170)  # alpha blending: kelembapan
+        wet = cairo.LinearGradient(0, GY + 6, 0, GY + 170)
         wet.add_color_stop_rgba(0, 0.25, 0.5, 0.85, 0.5 * basah)
         wet.add_color_stop_rgba(1, 0.25, 0.5, 0.85, 0)
         ctx.rectangle(0, GY + 6, W, 164)
@@ -125,7 +119,6 @@ class Tanah(Node):
 
 
 class Akar(Node):
-    """Akar tunggang + akar lateral: percabangan rekursif prosedural."""
     def __init__(self, besar, vigor, seed):
         super().__init__("Akar", x=CX, y=GY + 8)
         self.besar, self.vigor, self.seed = besar, vigor, seed
@@ -159,7 +152,6 @@ class Akar(Node):
 
 
 class Cuaca(Node):
-    """Lapisan atas: hujan, tint tekanan (MULTIPLY), vinyet."""
     def __init__(self, stres, hujan, seed):
         super().__init__("Cuaca")
         self.stres, self.hujan, self.seed = stres, hujan, seed
