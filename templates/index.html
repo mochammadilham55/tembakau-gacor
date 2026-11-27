@@ -52,9 +52,7 @@
     <p id="o_ciri" class="ciri"></p>
     <ul id="o_catatan"></ul>
     <details><summary>Struktur scene graph</summary><div id="o_node" class="kecil"></div><pre id="o_tree"></pre></details>
-    <p class="kecil">Ambang optimum hujan {{ asumsi.hujan_optimum[0]|int }}-{{ asumsi.hujan_optimum[1]|int }} mm/bulan
-      dan rentang hari tiap fase
-      adalah <b>asumsi</b> model, bukan data resmi. Visualisasi terinspirasi Na-Oogst; bukan prediksi agronomi atau mutu daun.</p>
+    <p class="kecil">Kebutuhan air skenario memakai Kc FAO dan ET0 asumsi {{ asumsi.eto_mm_hari }} mm/hari selama {{ asumsi.hari_bulan }} hari. Hujan tinggi di atas {{ asumsi.ambang_hujan_basah|int }} mm/bulan memicu tekanan basah visual (asumsi). Bukan pengukuran stres, prediksi agronomi atau mutu daun.</p>
   </section>
 </main>
 <script src="{{ url_for('static', filename='app.js') }}"></script>
